@@ -38,10 +38,7 @@
 			"UserData" : {"Fn::Base64" : {"Fn::Join" : ["",[
 				"#!/bin/bash -xe\n",
 				"sudo su\n",
-				"yum update -y\n",
-				"yum install docker -y\n",
-				"service docker start\n",
-				"docker run -itd --name myjenkins -p 8888:8080 jenkins/jenkins\n"
+				"yum update -y\n"
 				]]}}
         }
     },
@@ -56,10 +53,7 @@
 			"UserData" : {"Fn::Base64" : {"Fn::Join" : ["",[
 				"#!/bin/bash -xe\n",
 				"sudo su\n",
-				"yum update -y\n",
-				"yum install docker -y\n",
-				"service docker start\n",
-				"docker run -itd --name mynginx nginx\n"
+				"yum update -y\n"
 				]]}}
         }
     }
