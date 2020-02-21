@@ -3,7 +3,7 @@
 "Parameters": {
     "KeyName": {
         "Description": "Key Pair Name",
-        "Type": "AWS::EC2::KeyPair::swamy",
+        "Type": "AWS::EC2::KeyPair::idirect",
         "Default": "linuxdev"
     },
     "VPC": {
