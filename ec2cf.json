@@ -1,1 +1,78 @@
 
+  {"Description": "CloudFormation template for creating an ec2 instance",
+"Parameters": {
+    "KeyName": {
+        "Description": "Key Pair Name",
+        "Type": "AWS::EC2::KeyPair::KeyName",
+        "Default": "linuxdev"
+    },
+    "VPC": {
+        "Type": "AWS::EC2::VPC::Id",
+        "Default":"vpc-0cc8cf64"
+    },
+    "Subnet":{
+        "Type": "AWS::EC2::Subnet::Id",
+        "Default": "subnet-059a8612790a600ec"
+    },
+    "InstanceType": {
+        "Description": "Select one of the possible instance types",
+        "Type": "String",
+        "Default": "t2.micro",
+        "AllowedValues": ["t2.micro", "t2.small", "t2.medium"]
+    },
+    "SecurityGroup":{
+         "Type": "AWS::EC2::SecurityGroup::Id",
+         "Default" : "sg-07d413db2dc9f23f8",
+         "AllowedValues": ["sg-07d413db2dc9f23f8", "sg-yyy", "sg-zzz"]
+		 } 
+},
+"Resources":{
+    "Server1": {
+        "Type": "AWS::EC2::Instance",
+        "Properties": {
+            "ImageId": "ami-0d9462a653c34dab7",
+            "InstanceType": {"Ref": "InstanceType"},
+            "KeyName": {"Ref": "KeyName"},
+            "SecurityGroupIds": [{"Ref": "SecurityGroup"}],
+            "SubnetId": {"Ref": "Subnet"},
+			"UserData" : {"Fn::Base64" : {"Fn::Join" : ["",[
+				"#!/bin/bash -xe\n",
+				"sudo su\n",
+				"yum update -y\n",
+				"yum install docker -y\n",
+				"service docker start\n",
+				"docker run -itd --name myjenkins -p 8888:8080 jenkins/jenkins\n"
+				]]}}
+        }
+    },
+	"Server2": {
+        "Type": "AWS::EC2::Instance",
+        "Properties": {
+            "ImageId": "ami-0d9462a653c34dab7",
+            "InstanceType": {"Ref": "InstanceType"},
+            "KeyName": {"Ref": "KeyName"},
+            "SecurityGroupIds": [{"Ref": "SecurityGroup"}],
+            "SubnetId": {"Ref": "Subnet"},
+			"UserData" : {"Fn::Base64" : {"Fn::Join" : ["",[
+				"#!/bin/bash -xe\n",
+				"sudo su\n",
+				"yum update -y\n",
+				"yum install docker -y\n",
+				"service docker start\n",
+				"docker run -itd --name mynginx nginx\n"
+				]]}}
+        }
+    }
+},
+"Outputs": {
+    "PublicName": {
+        "Value": {"Fn::GetAtt": ["Server1", "PublicDnsName"]},
+        "Description": "Public name (connect via SSH)"
+    }   
+}
+}
+
+
+
+
+
